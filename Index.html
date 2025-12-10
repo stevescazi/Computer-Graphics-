@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Café Table — MiLo & Milk</title>
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <style>
+    html,body{height:100%;margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f3f3}
+    .overlay{position:absolute;left:12px;top:12px;background:rgba(255,255,255,0.95);padding:10px 12px;border-radius:6px;font-size:13px;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+    .overlay b{display:block;margin-bottom:6px}
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <b>Café Table — Milo & Milk</b>
+  </div>
+
+  <a-scene background="color:#ECECEC">
+    <a-entity light="type:ambient;intensity:0.8;color:#BBB"></a-entity>
+    <a-entity light="type:directional;intensity:0.7" position="-5 8 5"></a-entity>
+
+    <!-- Floor -->
+    <a-plane rotation="-90 0 0" width="20" height="20" color="#EDEDED"></a-plane>
+
+    <!-- Table (center) -->
+    <a-entity id="table" position="0 0 0">
+      <a-box width="1.2" height="0.06" depth="1.2" position="0 0.63 0" color="#A1887F"></a-box>
+      <!-- four legs -->
+      <a-box width="0.08" height="0.6" depth="0.08" position="0.5 0.3 0.5" color="#6D4C41"></a-box>
+      <a-box width="0.08" height="0.6" depth="0.08" position="-0.5 0.3 0.5" color="#6D4C41"></a-box>
+      <a-box width="0.08" height="0.6" depth="0.08" position="0.5 0.3 -0.5" color="#6D4C41"></a-box>
+      <a-box width="0.08" height="0.6" depth="0.08" position="-0.5 0.3 -0.5" color="#6D4C41"></a-box>
+
+      <!-- Items on table -->
+      <a-cylinder id="milo" radius="0.08" height="0.15" position="0.35 0.75 0.25" color="#0b7a2f" material="metalness:0.25"></a-cylinder>
+      <a-text value="MILO" position="0.35 0.9 0.25" rotation="0 180 0" color="#fff" align="center" width="0.6"></a-text>
+
+      <a-cylinder id="milk" radius="0.07" height="0.12" position="-0.35 0.735 0.25" color="#F5F5F5" material="metalness:0.2"></a-cylinder>
+      <a-text value="MILK" position="-0.35 0.87 0.25" rotation="0 180 0" color="#0033cc" align="center" width="0.5"></a-text>
+
+      <a-cylinder radius="0.05" height="0.08" position="0.15 0.74 -0.2" color="#FFF"></a-cylinder>
+      <a-cylinder radius="0.05" height="0.08" position="-0.15 0.74 -0.2" color="#FFF"></a-cylinder>
+
+      <a-cylinder radius="0.18" height="0.06" position="0 0.74 0" color="#B56E3A"></a-cylinder>
+      <a-sphere position="0 0.79 0" radius="0.045" color="#FF4D4D"></a-sphere>
+      <a-sphere position="0.08 0.79 0.02" radius="0.045" color="#FFD24D"></a-sphere>
+      <a-sphere position="-0.08 0.79 -0.02" radius="0.045" color="#FF944D"></a-sphere>
+    </a-entity>
+
+    <!-- Chairs created by script to keep HTML short; placed clearly away from table -->
+    <a-entity id="chairs"></a-entity>
+
+    <!-- Backdrop -->
+    <a-box width="5" height="3" depth="0.05" position="0 1.5 -2.2" color="#F5DEB3"></a-box>
+
+    <!-- Camera -->
+    <a-entity camera look-controls wasd-controls position="0 1.6 3"></a-entity>
+  </a-scene>
+
+  <script>
+    // small helper to create a simple chair (seat, back, 4 legs)
+    function createChair(x,z,rot){
+      const chair = document.createElement('a-entity');
+      chair.setAttribute('position', `${x} 0 ${z}`);
+      chair.setAttribute('rotation', `0 ${rot} 0`);
+      const seat = document.createElement('a-box'); seat.setAttribute('width',0.4); seat.setAttribute('height',0.05); seat.setAttribute('depth',0.4); seat.setAttribute('position','0 0.22 0'); seat.setAttribute('color','#8D6E63');
+      const back = document.createElement('a-box'); back.setAttribute('width',0.4); back.setAttribute('height',0.4); back.setAttribute('depth',0.03); back.setAttribute('position','0 0.5 -0.15'); back.setAttribute('color','#8D6E63');
+      chair.appendChild(seat); chair.appendChild(back);
+      const legPos = [[-0.17,0.11,0.17],[0.17,0.11,0.17],[-0.17,0.11,-0.17],[0.17,0.11,-0.17]];
+      legPos.forEach(p=>{
+        const leg = document.createElement('a-cylinder'); leg.setAttribute('position', p.join(' ')); leg.setAttribute('radius', 0.02); leg.setAttribute('height', 0.3); leg.setAttribute('color','#4E342E');
+        chair.appendChild(leg);
+      });
+      return chair;
+    }
+
+    const chairs = document.getElementById('chairs');
+    chairs.appendChild(createChair(0,1.3,180));   // front
+    chairs.appendChild(createChair(0,-1.3,0));    // back
+    chairs.appendChild(createChair(-1.3,0,90));   // left
+    chairs.appendChild(createChair(1.3,0,-90));   // right
+  </script>
+</body>
+</html>
